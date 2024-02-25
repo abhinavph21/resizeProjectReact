@@ -1,0 +1,39 @@
+:root {
+  --size: 20px;
+}
+.top {
+  width: 100%;
+  height: var(--size);
+  background-color: transparent;
+  position: absolute;
+  top: calc(var(--size) / 2 * -1);
+  left: 0;
+  cursor: n-resize;
+}
+.bottom {
+  width: 100%;
+  height: var(--size);
+  background-color: transparent;
+  position: absolute;
+  bottom: calc(var(--size) / 2 * -1);
+  right: 0;
+  cursor: n-resize;
+}
+.left {
+  width: var(--size);
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: calc(- var(--size) / 2);
+  cursor: e-resize;
+}
+.right {
+  width: var(--size);
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  right: calc(var(--size) / 2 * -1);
+  cursor: e-resize;
+}

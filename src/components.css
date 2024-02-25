@@ -1,0 +1,42 @@
+#parentElement {
+  height: 100%;
+  width: 100%;
+}
+#element1 {
+  position: absolute;
+  background-color: #f1f1f1;
+  border: 1px solid #d3d3d3;
+  /* left: 40px;
+    top:  40px; */
+  left: 0;
+  top: 5px;
+  width: calc(50% - 10px);
+  height: 50%;
+  border-radius: 5px;
+  background-color: rgb(100, 100, 199);
+  z-index: 1;
+}
+#element2 {
+  position: absolute;
+  background-color: #f1f1f1;
+  border: 1px solid #d3d3d3;
+  left: 50%;
+  top: 5px;
+  width: 50%;
+  height: calc(50% - 10px);
+  border-radius: 5px;
+  z-index: 0;
+  background-color: rgb(173, 84, 84);
+}
+#element3 {
+  position: absolute;
+  background-color: #f1f1f1;
+  border: 1px solid #d3d3d3;
+  left: 0;
+  top: calc(50% + 10px);
+  width: 100%;
+  height: calc(50% - 10px);
+  border-radius: 5px;
+  z-index: 0;
+  background-color: rgb(102, 199, 102);
+}

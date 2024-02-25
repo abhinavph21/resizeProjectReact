@@ -18,9 +18,9 @@ const MyCombinedProvider = (props) => {
       ref5: useRef(null),
     },
     contextBValue: {
-      component1: useRef(null),
-      component2: useRef(null),
-      component3: useRef(null),
+      componentRef1: useRef(null),
+      componentRef2: useRef(null),
+      componentRef3: useRef(null),
     },
   };
 

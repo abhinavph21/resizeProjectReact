@@ -37,6 +37,6 @@
   width: 100%;
   height: calc(50% - 10px);
   border-radius: 5px;
-  z-index: 0;
+  z-index: -1;
   background-color: rgb(102, 199, 102);
 }

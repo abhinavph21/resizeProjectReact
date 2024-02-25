@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from "react";
+import React, { useRef, useEffect, useContext, useState } from "react";
 import "./components.css";
 import "./side.css";
 import { CombinedContext } from "./App";
@@ -7,13 +7,32 @@ const ResizeComponent = ({ n }) => {
   // console.log(CombinedContext);
   const { contextAValue, contextBValue } = useContext(CombinedContext);
   let { ref1, ref2, ref3, ref4, ref5 } = contextAValue;
-  let { component1, component2, component3 } = contextBValue;
+  let { componentRef1, componentRef2, componentRef3 } = contextBValue;
   let topRef, bottomRef, leftRef, rightRef, componentRef;
   topRef = useRef(null);
   bottomRef = useRef(null);
   leftRef = useRef(null);
   rightRef = useRef(null);
   componentRef = useRef(null);
+
+  const initialUpdatedRefs = {
+    updatedRef1: useRef(null),
+    updatedRef2: useRef(null),
+    updatedRef3: useRef(null),
+    updatedRef4: useRef(null),
+    updatedRef5: useRef(null),
+  };
+
+  const initialUpdatedComponentRefs = {
+    updatedComponentRef1: useRef(null),
+    updatedComponentRef2: useRef(null),
+    updatedComponentRef3: useRef(null),
+  };
+
+  const [updatedRefs, setUpdatedRefs] = useState(initialUpdatedRefs);
+  const [updatedComponentRefs, setUpdatedComponentRefs] = useState(
+    initialUpdatedComponentRefs
+  );
 
   function resizeYNegative(e, componentRef) {
     e.stopPropagation();
@@ -164,6 +183,28 @@ const ResizeComponent = ({ n }) => {
   }
 
   useEffect(() => {
+    setUpdatedRefs((prevUpdatedRefs) => {
+      // console.log(prevUpdatedRefs);
+      let newUpdatedRefs = { ...prevUpdatedRefs };
+      newUpdatedRefs.updatedRef1 = ref1;
+      newUpdatedRefs.updatedRef2 = ref2;
+      newUpdatedRefs.updatedRef3 = ref3;
+      newUpdatedRefs.updatedRef4 = ref4;
+      newUpdatedRefs.updatedRef5 = ref5;
+      // console.log(newUpdatedRefs);
+      return newUpdatedRefs;
+    });
+
+    setUpdatedComponentRefs((prevUpdatedComponentRefs) => {
+      // console.log(prevUpdatedComponentRefs);
+      let newUpdatedRefs = { ...prevUpdatedComponentRefs };
+      newUpdatedRefs.updatedComponentRef1 = componentRef1;
+      newUpdatedRefs.updatedComponentRef2 = componentRef2;
+      newUpdatedRefs.updatedComponentRef3 = componentRef3;
+      // console.log(newUpdatedRefs);
+      return newUpdatedRefs;
+    });
+
     if (topRef.current) {
       topRef.current.addEventListener("mousedown", (e) => {
         resizeYNegative(e, componentRef);
@@ -202,45 +243,124 @@ const ResizeComponent = ({ n }) => {
         rightRef.current.removeEventListener("mousedown", resizeXPositive);
       }
     };
-  }, []);
+  }, [
+    ref1,
+    ref2,
+    ref3,
+    ref4,
+    ref5,
+    componentRef1,
+    componentRef2,
+    componentRef3,
+  ]);
+
+  useEffect(() => {
+    // Access updatedRefs and updatedComponentRefs here
+    if (
+      updatedRefs?.updatedRef1?.current &&
+      updatedComponentRefs?.updatedComponentRef2?.current
+    ) {
+      updatedRefs.updatedRef1.current.addEventListener("mousedown", (e) => {
+        resizeXNegative(e, updatedComponentRefs.updatedComponentRef2);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef2?.current &&
+      updatedComponentRefs?.updatedComponentRef1?.current
+    ) {
+      updatedRefs.updatedRef2.current.addEventListener("mousedown", (e) => {
+        resizeXPositive(e, updatedComponentRefs.updatedComponentRef1);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef3?.current &&
+      updatedComponentRefs?.updatedComponentRef2?.current
+    ) {
+      updatedRefs.updatedRef3.current.addEventListener("mousedown", (e) => {
+        resizeYPositive(e, updatedComponentRefs.updatedComponentRef2);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef3?.current &&
+      updatedComponentRefs?.updatedComponentRef3?.current
+    ) {
+      updatedRefs.updatedRef3.current.addEventListener("mousedown", (e) => {
+        resizeYNegative(e, updatedComponentRefs.updatedComponentRef3);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef4?.current &&
+      updatedComponentRefs?.updatedComponentRef1?.current
+    ) {
+      updatedRefs.updatedRef4.current.addEventListener("mousedown", (e) => {
+        resizeYPositive(e, updatedComponentRefs.updatedComponentRef1);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef4?.current &&
+      updatedComponentRefs?.updatedComponentRef3?.current
+    ) {
+      updatedRefs.updatedRef4.current.addEventListener("mousedown", (e) => {
+        resizeYNegative(e, updatedComponentRefs.updatedComponentRef3);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef5?.current &&
+      updatedComponentRefs?.updatedComponentRef1?.current
+    ) {
+      updatedRefs.updatedRef5.current.addEventListener("mousedown", (e) => {
+        resizeYPositive(e, updatedComponentRefs.updatedComponentRef1);
+      });
+    }
+    if (
+      updatedRefs?.updatedRef5?.current &&
+      updatedComponentRefs?.updatedComponentRef2?.current
+    ) {
+      updatedRefs.updatedRef5.current.addEventListener("mousedown", (e) => {
+        resizeYPositive(e, updatedComponentRefs.updatedComponentRef2);
+      });
+    }
+  }, [updatedRefs, updatedComponentRefs]);
+
+  // console.log(updatedRefs, updatedComponentRefs);
 
   return (
     <div
       id={`element${n}`}
       ref={(ele) => {
         componentRef.current = ele;
-        // if (n == 1) component1.current = ele;
-        // if (n == 2) component2.current = ele;
-        // if (n == 3) component3.current = ele;
+        if (n == 1) componentRef1.current = ele;
+        if (n == 2) componentRef2.current = ele;
+        if (n == 3) componentRef3.current = ele;
       }}
     >
       <div
         className="top"
         ref={(ele) => {
           topRef.current = ele;
-          // if (n == 3) ref5.current = ele;
+          if (n == 3) ref5.current = ele;
         }}
       ></div>
       <div
         className="bottom"
         ref={(ele) => {
           bottomRef.current = ele;
-          // if (n == 1) ref3.current = ele;
-          // if (n == 2) ref4.current = ele;
+          if (n == 1) ref3.current = ele;
+          if (n == 2) ref4.current = ele;
         }}
       ></div>
       <div
         className="left"
         ref={(ele) => {
           leftRef.current = ele;
-          // if (n == 2) ref2.current = ele;
+          if (n == 2) ref2.current = ele;
         }}
       ></div>
       <div
         className="right"
         ref={(ele) => {
           rightRef.current = ele;
-          // if (n == 1) ref1.current = ele;
+          if (n == 1) ref1.current = ele;
         }}
       ></div>
     </div>

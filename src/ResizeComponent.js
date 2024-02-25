@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
+import axios from "axios";
 import "./components.css";
 import "./side.css";
 import { CombinedContext } from "./App";
@@ -34,6 +35,10 @@ const ResizeComponent = ({ n }) => {
     initialUpdatedComponentRefs
   );
 
+  const [addText, setAddText] = useState("")
+  const [updateText, setUpdateText] = useState("")
+  const [count, setCount] = useState("")
+
   function resizeYNegative(e, componentRef) {
     e.stopPropagation();
     console.log("resize y negative", componentRef);
@@ -44,7 +49,6 @@ const ResizeComponent = ({ n }) => {
     let startH;
     let maxY;
     function dragMouseDown(e) {
-      console.log("change y");
       if (e.button !== 0) return;
       e = e || window.event;
       e.preventDefault();
@@ -76,7 +80,6 @@ const ResizeComponent = ({ n }) => {
   }
 
   function resizeYPositive(e, componentRef) {
-    console.log("resize y positive", componentRef);
     let minH = 10,
       minW = 10;
     let offsetY;
@@ -111,7 +114,6 @@ const ResizeComponent = ({ n }) => {
   }
 
   function resizeXNegative(e, componentRef) {
-    console.log("resize x ", componentRef);
     let offsetX;
     let startX;
     let startW;
@@ -134,7 +136,6 @@ const ResizeComponent = ({ n }) => {
     }
 
     function elementDrag(e) {
-      console.log("changing x left");
       const { clientX } = e;
       let x = clientX - offsetX;
       let w = startW + startX - x;
@@ -322,7 +323,35 @@ const ResizeComponent = ({ n }) => {
     }
   }, [updatedRefs, updatedComponentRefs]);
 
-  // console.log(updatedRefs, updatedComponentRefs);
+  const addData = async () => {
+    try {
+      const addedData = await axios.post(`http://localhost:8000/content/${n}`, { data: addText })
+      setAddText("")
+      alert(`added text ${addedData.data.data} to component ${n}`)
+      console.log(addedData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const updateData = async () => {
+    try {
+      const updateData = await axios.put(`http://localhost:8000/content/${n}`, { data: updateText })
+      setUpdateText("")
+      alert(`updated text of component ${n} to ${updateData.data.data}`)
+      console.log(updateData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const showCount = async () => {
+    try {
+      const countData = await axios.get(`http://localhost:8000/count/${n}`)
+      alert(`view count of component ${n} is ${countData.data.count}`)
+      console.log(countData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div
@@ -363,6 +392,19 @@ const ResizeComponent = ({ n }) => {
           if (n == 1) ref1.current = ele;
         }}
       ></div>
+      <div className="content">
+        <div className="content-add">
+          <input onChange={(e) => { setAddText(e.target.value) }} value={addText} />
+          <button onClick={() => { addData() }}>add</button>
+        </div>
+        <div className="content-update">
+          <input onChange={(e) => { setUpdateText(e.target.value) }} value={updateText} />
+          <button onClick={() => { updateData() }}>update</button>
+        </div>
+        <div className="count">
+          <button onClick={() => { showCount() }}>view count</button>
+        </div>
+      </div>
     </div>
   );
 };

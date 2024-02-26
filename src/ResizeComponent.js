@@ -325,7 +325,7 @@ const ResizeComponent = ({ n }) => {
 
   const addData = async () => {
     try {
-      const addedData = await axios.post(`http://localhost:8000/content/${n}`, { data: addText })
+      const addedData = await axios.post(`https://naughty-bull-crown.cyclic.app/content/${n}`, { data: addText })
       setAddText("")
       alert(`added text ${addedData.data.data} to component ${n}`)
       console.log(addedData);
@@ -335,7 +335,7 @@ const ResizeComponent = ({ n }) => {
   }
   const updateData = async () => {
     try {
-      const updateData = await axios.put(`http://localhost:8000/content/${n}`, { data: updateText })
+      const updateData = await axios.put(`https://naughty-bull-crown.cyclic.app/content/${n}`, { data: updateText })
       setUpdateText("")
       alert(`updated text of component ${n} to ${updateData.data.data}`)
       console.log(updateData);
@@ -345,7 +345,7 @@ const ResizeComponent = ({ n }) => {
   }
   const showCount = async () => {
     try {
-      const countData = await axios.get(`http://localhost:8000/count/${n}`)
+      const countData = await axios.get(`https://naughty-bull-crown.cyclic.app/count/${n}`)
       alert(`view count of component ${n} is ${countData.data.count}`)
       console.log(countData);
     } catch (err) {
@@ -395,11 +395,11 @@ const ResizeComponent = ({ n }) => {
       <div className="content">
         <div className="content-add">
           <input onChange={(e) => { setAddText(e.target.value) }} value={addText} />
-          <button onClick={() => { addData() }}>add</button>
+          <button onClick={() => { addData() }} disabled={addText == ""}>add</button>
         </div>
         <div className="content-update">
           <input onChange={(e) => { setUpdateText(e.target.value) }} value={updateText} />
-          <button onClick={() => { updateData() }}>update</button>
+          <button onClick={() => { updateData() }} disabled={updateText == ""}>update</button>
         </div>
         <div className="count">
           <button onClick={() => { showCount() }}>view count</button>
